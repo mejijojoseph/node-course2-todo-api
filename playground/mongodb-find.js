@@ -1,33 +1,30 @@
-const {MongoClient,ObjectID} = require('mongodb');
+// const MongoClient = require('mongodb').MongoClient;
+const {MongoClient, ObjectID} = require('mongodb');
 
-MongoClient.connect('mongodb://localhost:27017',(error,client) => {
-    if(error) {
-        return console.log('Unable to connect');
-    }
-    console.log('connected Successfully');
-    const db = client.db('TodoApp');
-    var collection = db.collection('Todos');
+MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, db) => {
+  if (err) {
+    return console.log('Unable to connect to MongoDB server');
+  }
+  console.log('Connected to MongoDB server');
 
-    // db.collection('Todos').find({_id: new ObjectID('5b2a8d283400ba1f74f32e6c')}).toArray().then((docs)=>{
-    //     console.log("Todos listing");
-    //     console.log(JSON.stringify(docs, undefined,2));
-    // },(err) => {
-    //     console.log('Unable to fetch the Records',err);
-    // });
+  // db.collection('Todos').find({
+  //   _id: new ObjectID('57bb36afb3b6a3801d8c479d')
+  // }).toArray().then((docs) => {
+  //   console.log('Todos');
+  //   console.log(JSON.stringify(docs, undefined, 2));
+  // }, (err) => {
+  //   console.log('Unable to fetch todos', err);
+  // });
 
-    collection.find().count().then((count)=>{
-        console.log("The count of todos is :",count);
-    })
+  // db.collection('Todos').find().count().then((count) => {
+  //   console.log(`Todos count: ${count}`);
+  // }, (err) => {
+  //   console.log('Unable to fetch todos', err);
+  // });
 
-    var userCollection = db.collection('Users');
+  db.collection('Users').find({name: 'Andrew'}).toArray().then((docs) => {
+    console.log(JSON.stringify(docs, undefined, 2));
+  });
 
-    userCollection.find({Username:'jijo'}).toArray().then((docs) => {
-        console.log(`Users with name Jijo`);
-        console.log(JSON.stringify(docs,undefined,2));
-    });
-
-    userCollection.find({name:'Jijo'}).count().then((count) => {
-        console.log(`Users with name Jijo is ${count}`);
-    });
-    client.close();
+  // db.close();
 });
